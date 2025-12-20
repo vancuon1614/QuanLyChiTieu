@@ -1,9 +1,7 @@
-// lib/screens/login_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-// import '../screens/main_screen.dart'; // Không cần thiết nếu dùng AuthCheckScreen
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -34,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SnackBar(content: Text('Đăng nhập thành công!')),
         );
 
-        // Không cần Navigator.push/pop, chỉ cần rebuild giao diện qua Provider.
+        
       } else {
         // Đăng nhập thất bại (sai tên người dùng hoặc mật khẩu)
         ScaffoldMessenger.of(context).showSnackBar(

@@ -1,5 +1,3 @@
-// lib/services/database_helper.dart
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:personal_expense_manager/models/expense.dart';
@@ -26,9 +24,9 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), dbName);
     return await openDatabase(
       path, 
-      version: 2, // Đã thay đổi từ 1 lên 2
+      version: 2, 
       onCreate: (db, version) async{
-      // 1. TẠO BẢNG USERS (Đã bổ sung email và phone)
+      // 1. TẠO BẢNG USERS 
       await db.execute('''
         CREATE TABLE $userTable(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,8 +52,6 @@ class DatabaseHelper {
     });
   }
 
-  // --- HÀM MỚI: Đăng nhập/Đăng ký ---
-  
   // Lấy User theo username hoặc email (dùng cho Login)
   Future<Map<String, dynamic>?> getUserByUsernameOrEmail(String identifier) async {
     final db = await database;
@@ -84,19 +80,19 @@ class DatabaseHelper {
     return null;
   }
   
-  // Hàm Đổi mật khẩu
+  // Đổi mật khẩu
   Future<bool> updatePassword(int userId, String newPassword) async {
     final db = await database;
     final result = await db.update(
       userTable,
-      {'password': newPassword}, // Lưu mật khẩu mới (chưa hash để đơn giản)
+      {'password': newPassword}, 
       where: 'id = ?',
       whereArgs: [userId],
     );
     return result > 0;
   }
   
-  // Hàm thêm User (Dùng cho Register)
+  //thêm User (Dùng cho Register)
   Future<bool> insertUser(String username, String password, String email, String phone) async {
     final db = await database;
     // Kiểm tra username hoặc email đã tồn tại chưa
@@ -119,9 +115,9 @@ class DatabaseHelper {
     return true;
   }
 
-  // --- HÀM EXPENSE KHÁC GIỮ NGUYÊN HOẶC ĐÃ CẬP NHẬT TRƯỚC ĐÓ ---
+ 
   
-  // Hàm lấy chi tiêu theo UserID (Dùng cho ExpenseProvider)
+  // lấy chi tiêu theo UserID (Dùng cho ExpenseProvider)
   Future<List<Expense>> getExpensesByUserId(int userId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -131,14 +127,13 @@ class DatabaseHelper {
       orderBy: 'date DESC',
     );
     
-    // Giả định Expense.fromMap(map) có thể xử lý việc thiếu userId trong map (nếu model cũ)
-    // Cần đảm bảo Expense model có thêm thuộc tính userId (đã được sửa ở câu hỏi trước)
+    
     return List.generate(maps.length, (i) {
       return Expense.fromMap(maps[i]); 
     });
   }
 
-  // Hàm insert chi tiêu (Dùng cho ExpenseProvider)
+
   Future<void> insertExpense(Expense expense) async {
     final db = await database;
     await db.insert(
@@ -148,7 +143,7 @@ class DatabaseHelper {
     );
   }
 
-  // Hàm xóa chi tiêu
+  // xóa chi tiêu
   Future<void> deleteExpense(String id, int userId) async {
     final db = await database;
     await db.delete(

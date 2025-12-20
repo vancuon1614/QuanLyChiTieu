@@ -24,7 +24,7 @@ class MainScreenState extends State<MainScreen> {
   ];
 
   void onItemTapped(int index) {
-    if (index == 2) { // 2 là index của nút "Thêm"
+    if (index == 2) { 
       navigateToAddExpense();
       return;
     }
